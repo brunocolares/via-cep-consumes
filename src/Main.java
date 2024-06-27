@@ -13,8 +13,19 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args)  {
+        Scanner leitura = new Scanner(System.in);
+        System.out.println("Digite o CEP: ");
+        String cep = leitura.nextLine();
         ConsultaCep consultaCep = new ConsultaCep();
-        Endereco endereco = consultaCep.buscaEndereco("35170250");
-        System.out.println(endereco);
+
+        try {
+            Endereco endereco = consultaCep.buscaEndereco(cep);
+            System.out.println(endereco);
+            GeradorDeArquivo gerador = new GeradorDeArquivo();
+            gerador.salvaJson(endereco);
+        } catch(RuntimeException | IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Finalizando a aplicação.");
+        }
     }
 }
